@@ -6,7 +6,7 @@ import { LitElement, html, css } from 'lit';
  * 2. Get your CSS rescoped as needed to work here
  */
 
-export class MyCard extends LitElement {
+export class MediaImage extends LitElement {
 
   static get tag() {
     return 'my-card';
@@ -36,4 +36,4 @@ export class MyCard extends LitElement {
   }
 }
 
-globalThis.customElements.define(MyCard.tag, MyCard);
+globalThis.customElements.define(MediaImage.tag, MediaImage);
