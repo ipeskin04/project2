@@ -11,16 +11,25 @@ export class ImgGallery extends LitElement {
   constructor() {
     super();
     this.title = "img-gallery";
-    this.image = ["https://dogtowndogtraining.com/wp-content/uploads/2012/06/300x300-061-e1340955308953.jpg", "https://www.allthebestpetcare.com/wp-content/uploads/2021/10/cbd-oil-cat-anxiety-300x300.jpg", "https://s28164.pcdn.co/files/Asian-Small-clawed-Otter-0072-2545-300x300.jpg", "https://winghamwildlifepark.co.uk/wp-content/uploads/2013/04/Panda-200-300x300.jpg", "https://im.rediff.com/300-300/news/2020/sep/15funny1.jpg"];
+    this.image = [];
     this.imageNumber = 1; //current number shown
     this.totalImageNumber = 5; //maximum
+    this.visible = false;
   }
 
   static get styles() {
     return css`
       :host {
-        display: block;
+        display: flex;
+        z-index: 1;
+        position: absolute;
+        height: 80%;
+        width: 80%;
+
+        left: 20%;
+        top: 20%;
       }
+
 
       #image {
         margin: 20px;
@@ -39,9 +48,12 @@ export class ImgGallery extends LitElement {
         padding: 8px;
         width:500px;
         height:500px;
-        background-color: lightblue;
+        background-color: var(--ddd-theme-default-slateLight);
         color: black;
         position: relative;
+        border: var(--ddd-border-lg);
+              border-color: var(--ddd-theme-default-potentialMidnight);
+              border-radius: var(--ddd-radius-md);
           }
 
         .topRow
@@ -58,7 +70,7 @@ export class ImgGallery extends LitElement {
           justify-content: left;
         }
 
-        .closeButton
+        .closePopupButton
         {
         margin: 8px;
         display: flex;
@@ -95,6 +107,24 @@ export class ImgGallery extends LitElement {
     `;
   }
 
+  closeBtn(){
+    this.visible = false;
+  }
+
+  firstUpdated(){
+    var data = document.querySelectorAll('media-image');
+    data.forEach(image => {
+      this.image.push(image.getAttribute('imgSrc'));
+    })
+
+    console.log(this.image);
+
+    document.addEventListener('image-clicked', (e) => {
+      var url = e.target.attributes.imgSrc.nodeValue;
+      this.imageNumber = this.image.indexOf(url) + 1;
+      this.visible = true;
+    })
+  }
 
   rightClick()
  {
@@ -117,9 +147,8 @@ else
   this.requestUpdate();
  }
 
-
   render() {
-    return html`
+    return (!this.visible) ? html`` :  html`
     <div class="backdrop">
 
     <div class="topRow">
@@ -132,7 +161,7 @@ else
     </div>
   </p>
 
-    <button class="closeButton">
+    <button class="closePopupButton" onclick="${this.closeBtn}">
     x
   </button>
 
@@ -161,8 +190,9 @@ else
     return {
       title: { type: String },
       image: {type: Array},
-      imageNumber : {type: String},
-      totalImageNumber: {type: String},
+      imageNumber : {type: Number},
+      totalImageNumber: {type: Number},
+      visible: {type: Boolean},
     };
   }
 }
