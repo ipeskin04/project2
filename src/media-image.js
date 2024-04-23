@@ -12,6 +12,7 @@ export class mediaImage extends DDD {
   constructor() {
     super();
     this.imgSrc = "";
+    this.caption = "";
   }
 
   handleClick(){
@@ -67,6 +68,7 @@ export class mediaImage extends DDD {
               -webkit-transform: translate(var(--ddd-spacing-4));
               transform: translate(var(--ddd-spacing-4));
               transition: .3s ease;
+
           }
       `
   ];
@@ -74,9 +76,12 @@ export class mediaImage extends DDD {
 
 
   render() {
+    console.log(this.caption);
+
     return html`
         <div class="img-color-bord" @click="${this.handleClick}">
             <img class="image" src="${this.imgSrc}">
+            <div class="caption">${this.caption}</div> <!-- Display caption -->
         </div>
         `;
   }
@@ -85,6 +90,7 @@ export class mediaImage extends DDD {
     return {
       ...super.properties,
             imgSrc: { type: String, reflect: true },
+            caption: { type: String },
     };
   }
 }

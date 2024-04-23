@@ -12,6 +12,7 @@ export class ImgGallery extends LitElement {
     super();
     this.title = "img-gallery";
     this.image = [];
+    this.captionArray = [];
     this.imageNumber = 1; //current number shown
     this.totalImageNumber = 5; //maximum
     this.visible = false;
@@ -109,6 +110,7 @@ export class ImgGallery extends LitElement {
 
     `;
   }
+  
 
   closeBtn(){
     this.visible = false;
@@ -118,9 +120,10 @@ export class ImgGallery extends LitElement {
     var data = document.querySelectorAll('media-image');
     data.forEach(image => {
       this.image.push(image.getAttribute('imgSrc'));
+      this.captionArray.push(image.getAttribute('caption'));
     })
 
-    console.log(this.image);
+    console.log(this.captionArray);
 
     window.addEventListener('image-clicked', (e) => {
       var url = e.target.attributes.imgSrc.nodeValue;
@@ -168,19 +171,23 @@ else
 
 
 <div class="slide-image">
+  
     <img id="image" src= ${this.image[this.imageNumber-1]} alt = "slide">
     </div>
 
+
     <div class="imageLoop">
+      
         <button class="leftButton" @click="${this.leftClick}">
         ←
   </button>
+  <div>${this.captionArray[this.imageNumber - 1]}</div>
         <button class="rightButton" @click="${this.rightClick}">
         →
   </button>
     </div>
     </div>
-    
+
     `;
   }
 
