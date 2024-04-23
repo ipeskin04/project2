@@ -19,15 +19,18 @@ export class ImgGallery extends LitElement {
 
   static get styles() {
     return css`
-      :host {
-        display: flex;
-        z-index: 1;
-        position: absolute;
-        height: 80%;
-        width: 80%;
 
-        left: 20%;
-        top: 20%;
+      :host {
+        display: none;
+      }
+      :host([visible]) {
+        display: flex;
+        z-index: 10000;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
       }
 
 
@@ -44,7 +47,7 @@ export class ImgGallery extends LitElement {
 
       .backdrop
       {
-        margin: 8px;
+        margin: auto;
         padding: 8px;
         width:500px;
         height:500px;
@@ -52,9 +55,9 @@ export class ImgGallery extends LitElement {
         color: black;
         position: relative;
         border: var(--ddd-border-lg);
-              border-color: var(--ddd-theme-default-potentialMidnight);
-              border-radius: var(--ddd-radius-md);
-          }
+        border-color: var(--ddd-theme-default-potentialMidnight);
+        border-radius: var(--ddd-radius-md);
+      }
 
         .topRow
           {
@@ -119,7 +122,7 @@ export class ImgGallery extends LitElement {
 
     console.log(this.image);
 
-    document.addEventListener('image-clicked', (e) => {
+    window.addEventListener('image-clicked', (e) => {
       var url = e.target.attributes.imgSrc.nodeValue;
       this.imageNumber = this.image.indexOf(url) + 1;
       this.visible = true;
@@ -148,20 +151,15 @@ else
  }
 
   render() {
-    return (!this.visible) ? html`` :  html`
+    return (!this.visible) ?`` :  html`
     <div class="backdrop">
-
     <div class="topRow">
-    <p>
-  <div class="slide-image-number"> 
-    ${this.imageNumber}
-    </div> of
-    <div class="total-image-number">
-    ${this.totalImageNumber}
-    </div>
-  </p>
+    <div>
+      <div class="slide-image-number">${this.imageNumber}</div> of
+      <div class="total-image-number">${this.totalImageNumber}</div>
+  </div>
 
-    <button class="closePopupButton" onclick="${this.closeBtn}">
+    <button class="closePopupButton" @click="${this.closeBtn}">
     x
   </button>
 
@@ -177,7 +175,7 @@ else
         <button class="leftButton" @click="${this.leftClick}">
         ←
   </button>
-        <button class = "rightButton" @click="${this.rightClick}">
+        <button class="rightButton" @click="${this.rightClick}">
         →
   </button>
     </div>
@@ -192,7 +190,7 @@ else
       image: {type: Array},
       imageNumber : {type: Number},
       totalImageNumber: {type: Number},
-      visible: {type: Boolean},
+      visible: {type: Boolean, reflect: true},
     };
   }
 }

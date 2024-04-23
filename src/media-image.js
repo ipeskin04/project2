@@ -23,7 +23,6 @@ export class mediaImage extends DDD {
       cancelable: true,
       detail: {
       opened: true,
-      invokedBy: this.invokedBy,
       },
       });
     this.dispatchEvent(evt);
